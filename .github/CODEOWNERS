@@ -1,0 +1,3 @@
+# Catalog maintainers. Every change needs their review; only they may set
+# official, status, ownership and history in extensions/*.yaml.
+* @samdark

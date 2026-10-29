@@ -1,0 +1,27 @@
+# Catalog categories per extension type. An entry may use up to 5 categories of its type.
+# A new category is added here in its own pull request, reviewed by a maintainer.
+theme:
+  - blog
+  - documentation
+  - portfolio
+  - landing
+  - minimal
+  - starter
+processor:
+  - markup
+  - code
+  - diagrams
+  - media
+  - navigation
+  - seo
+importer:
+  - blog-platform
+  - static-site
+  - wiki
+  - cms
+plugin:
+  - search
+  - feeds
+  - images
+  - analytics
+  - deployment
