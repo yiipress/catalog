@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Symfony\Component\Console\Application;
+use YiiPress\Catalog\Build\Services;
+use YiiPress\Catalog\Console\CheckCommand;
+use YiiPress\Catalog\Console\GenerateCommand;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$token = getenv('GITHUB_TOKEN');
+$services = static fn(string $cache, bool $offline): Services => Services::create(
+    Services::http(is_string($token) ? $token : ''),
+    $cache,
+    gmdate('Y-m-d\TH:i:s\Z'),
+    $offline,
+);
+
+$application = new Application('YiiPress catalog');
+$application->addCommand(new GenerateCommand($services));
+$application->addCommand(new CheckCommand($services, getenv('GITHUB_ACTIONS') === 'true'));
+$application->run();
