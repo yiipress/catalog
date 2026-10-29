@@ -7,6 +7,7 @@
         "php": "^8.5",
         "ext-curl": "*",
         "ext-yaml": "*",
+        "symfony/console": "^8.1",
         "yiipress/engine": "dev-extension-manifest#4aaa3927571c7902419b8d816f2e546776fc558f"
     },
     "require-dev": {

@@ -61,6 +61,11 @@ final readonly class ReleaseLists
         }
     }
 
+    public function now(): string
+    {
+        return $this->now;
+    }
+
     public function isOffline(): bool
     {
         return $this->offline;
