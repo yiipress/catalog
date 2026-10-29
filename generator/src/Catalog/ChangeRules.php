@@ -15,9 +15,9 @@ use function strtolower;
  * Rules for a change of the catalog, comparing a pull request with its base branch.
  *
  * - An entry is never deleted: withdrawing keeps a tombstone, so an ID is never given to another package.
- * - `official`, `status`, `ownership` and `history` are maintainer-only.
+ * - `official`, `status`, `ownership`, `history` and `withdrawn` are maintainer-only.
  * - A new repository URL needs a `history` row naming the old one.
- * - A withdrawn ID may come back only for the same repository.
+ * - A withdrawn ID never goes to another repository; only a maintainer can list it again for the same one.
  */
 final readonly class ChangeRules
 {
@@ -60,6 +60,7 @@ final readonly class ChangeRules
             'status' => $new->status !== ($old->status ?? EntryStatus::Listed),
             'ownership' => $new->ownershipRecord !== $old?->ownershipRecord,
             'history' => $new->history != ($old->history ?? []),
+            'withdrawn' => $new->withdrawal != $old?->withdrawal,
         ];
         foreach ($changed as $field => $isChanged) {
             if ($isChanged) {

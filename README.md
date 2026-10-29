@@ -49,11 +49,16 @@ official: true
 `check.yml` compares a pull request with its base branch. The maintainers are the users in `.github/CODEOWNERS` of
 the base branch.
 
+The check runs the generator code of the pull request itself, so a pull request that changes `generator/` can turn
+these rules off. The gate is the review: `.github/CODEOWNERS` puts every file under the maintainers, and the branch
+protection of `master` must require a review from code owners. The check tells the reviewer what changed.
+
 - An entry file is never deleted (`entry_removed`). An extension leaves the catalog as a tombstone: `status:
-  withdrawn` with `withdrawn.date` and `withdrawn.reason`. A withdrawn ID is never listed again (`tombstone_reused`);
-  it stays on the site's «Withdrawn IDs» page.
+  withdrawn` with `withdrawn.date` and `withdrawn.reason`. It has no page of its own and stays on the site's «Withdrawn
+  IDs» page. A withdrawn ID never goes to another repository (`tombstone_reused`); only a maintainer can list it again
+  for the same one.
 - `abandoned` entries stay listed with a notice and their last data.
-- Only maintainers may change `official`, `status`, `ownership` and `history` (`maintainer_only`).
+- Only maintainers may change `official`, `status`, `ownership`, `history` and `withdrawn` (`maintainer_only`).
 - A change of `repository` needs a new `history` row in the same pull request (`transfer_unrecorded`). Sites that
   installed the extension keep their old source in their lock file; nothing is redirected.
 
@@ -112,6 +117,10 @@ yiipress serve             # a preview with live reload
 Everything the generator writes into `site/content/` (`data/catalog.yaml`, `themes/`, `processors/`, `importers/`,
 `plugins/`, `assets/extensions/`) is git-ignored. The hand-written pages are `index.md`, `submit.md` and
 `withdrawn.md`; the theme is `site/themes/catalog/` over the bundled `minimal` theme.
+
+YiiPress also loads every `content/processors/*.php` as a local content processor. In this site that directory holds
+the generated processor pages: the generator writes only `.md` files there and deletes the directory on each run, so
+never put processor code in `site/content/processors/`.
 
 ## Engine dependency
 

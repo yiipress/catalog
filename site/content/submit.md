@@ -21,7 +21,7 @@ categories: [blog, minimal]
 
 - The file path is the extension ID. It must match the manifest `id`.
 - `categories`: one to five from [`categories.yaml`](https://github.com/yiipress/catalog/blob/master/categories.yaml) for your extension type. A new category needs its own pull request.
-- Leave out `official`, `status`, `ownership` and `history`: only the catalog maintainers set them.
+- Leave out `official`, `status`, `ownership`, `history` and `withdrawn`: only the catalog maintainers set them.
 
 The pull request check reads your releases and manifests and reports every problem at once. A maintainer reviews and merges it; the merge is the approval. The site picks up new releases once a day.
 

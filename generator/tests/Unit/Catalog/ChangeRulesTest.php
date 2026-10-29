@@ -14,6 +14,7 @@ use YiiPress\Extension\ExtensionId;
 
 use function array_map;
 use function implode;
+use function str_replace;
 
 final class ChangeRulesTest extends TestCase
 {
@@ -53,6 +54,14 @@ final class ChangeRulesTest extends TestCase
             ['tombstone_reused extensions/acme/dusk.yaml'],
         ];
         yield 'tombstone reinstated by a maintainer' => [['acme/dusk' => self::TOMBSTONE], ['acme/dusk' => self::DUSK], true, []];
+        $rewritten = str_replace('reason: Gone', 'reason: Use acme/other instead', self::TOMBSTONE);
+        yield 'withdrawal rewritten by a contributor' => [
+            ['acme/dusk' => self::TOMBSTONE],
+            ['acme/dusk' => $rewritten],
+            false,
+            ['maintainer_only extensions/acme/dusk.yaml#withdrawn'],
+        ];
+        yield 'withdrawal rewritten by a maintainer' => [['acme/dusk' => self::TOMBSTONE], ['acme/dusk' => $rewritten], true, []];
         yield 'tombstone removed' => [['acme/dusk' => self::TOMBSTONE], [], true, ['entry_removed extensions/acme/dusk.yaml']];
     }
 
