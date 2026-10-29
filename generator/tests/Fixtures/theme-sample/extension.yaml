@@ -1,0 +1,18 @@
+manifest: 1
+id: yiipress/theme-sample
+type: theme
+name: Sample theme
+description: >-
+  A small theme over the built-in minimal theme. It changes the colors and the footer and takes everything else
+  from minimal, as a starting point for your own theme.
+version: 1.0.0
+yiipress: ">=0.2.0 <1.0"
+license: BSD-3-Clause
+authors:
+  - name: YiiPress
+    url: https://github.com/yiipress
+homepage: https://github.com/yiipress/theme-sample
+theme:
+  fallback: minimal
+  intended_use: A starting point for a theme that changes only some files of minimal.
+  screenshots: [screenshots/home.png]
