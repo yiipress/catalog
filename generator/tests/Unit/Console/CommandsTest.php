@@ -91,6 +91,17 @@ final class CommandsTest extends TestCase
         self::assertStringContainsString('::error::', $tester->getDisplay());
     }
 
+    public function testCheckDoesNotClaimNothingChangedWhenTheCatalogDidNotLoad(): void
+    {
+        $this->tree->write('extensions/acme/dusk.yaml', "categories: [blog]\n");
+        $tester = new CommandTester(new CheckCommand($this->services(...)));
+
+        $tester->execute(['--root' => $this->tree->root, '--cache' => $this->tree->root . '/cache']);
+
+        self::assertStringNotContainsString('No new or changed entries', $tester->getDisplay());
+        self::assertStringContainsString('1 problem found.', $tester->getDisplay());
+    }
+
     private function services(string $cache, bool $offline): Services
     {
         $this->offline = $offline;

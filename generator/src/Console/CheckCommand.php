@@ -51,9 +51,11 @@ final class CheckCommand extends Command
             is_string($author) && $author !== '' ? $author : null,
         );
 
-        $output->writeln($report->checked === []
-            ? 'No new or changed entries to read from GitHub.'
-            : 'Read from GitHub: ' . implode(', ', $report->checked) . '.');
+        if ($report->checked !== []) {
+            $output->writeln('Read from GitHub: ' . implode(', ', $report->checked) . '.');
+        } elseif ($report->errors === []) {
+            $output->writeln('No new or changed entries to read from GitHub.');
+        }
         foreach ($report->errors as $error) {
             // A workflow annotation is one line; GitHub decodes %0A back into line breaks.
             $output->writeln($this->githubActions ? '::error::' . str_replace("\n", '%0A', $error) : '<error>Error:</error> ' . $error);
