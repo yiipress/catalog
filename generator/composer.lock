@@ -2006,12 +2006,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiipress/engine",
-                "reference": "51049f12dca6e388c604302ae895fd9aa747d1c9"
+                "reference": "4aaa3927571c7902419b8d816f2e546776fc558f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiipress/engine/zipball/51049f12dca6e388c604302ae895fd9aa747d1c9",
-                "reference": "51049f12dca6e388c604302ae895fd9aa747d1c9",
+                "url": "https://api.github.com/repos/yiipress/engine/zipball/4aaa3927571c7902419b8d816f2e546776fc558f",
+                "reference": "4aaa3927571c7902419b8d816f2e546776fc558f",
                 "shasum": ""
             },
             "require": {
@@ -2136,7 +2136,7 @@
                     "url": "https://github.com/sponsors/yiisoft"
                 }
             ],
-            "time": "2026-10-29T20:13:42+00:00"
+            "time": "2026-10-29T20:25:12+00:00"
         },
         {
             "name": "yiisoft/arrays",

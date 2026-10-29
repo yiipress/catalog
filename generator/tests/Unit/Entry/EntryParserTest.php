@@ -165,6 +165,31 @@ final class EntryParserTest extends TestCase
         self::fail('No exception thrown.');
     }
 
+    /**
+     * Aliases expanding past the engine's YAML node limit are refused. This also guards the engine pin: the rejected
+     * engine commit 51049f1 let this file through.
+     */
+    public function testRefusesEntryOverTheYamlNodeLimit(): void
+    {
+        $yaml = "repository: https://github.com/acme/theme-dusk\ncategories: [blog]\n"
+            . "a: &a [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n"
+            . "b: &b [*a, *a, *a, *a, *a, *a, *a, *a, *a, *a]\n"
+            . "c: &c [*b, *b, *b, *b, *b, *b, *b, *b, *b, *b]\n"
+            . "d: [*c, *c, *c, *c, *c, *c, *c, *c, *c, *c]\n";
+
+        try {
+            new EntryParser()->parse(self::id(), $yaml);
+        } catch (InvalidEntryException $exception) {
+            self::assertContains('file_too_large', array_map(
+                static fn($error): string => $error->code,
+                $exception->errors(),
+            ));
+            return;
+        }
+
+        self::fail('No exception thrown.');
+    }
+
     private static function id(): ExtensionId
     {
         $id = ExtensionId::tryFromString('acme/dusk');
