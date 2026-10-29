@@ -1,0 +1,80 @@
+name: Pages
+
+# Builds the catalog from the metadata and the extensions' GitHub releases, then deploys it to GitHub Pages.
+# The daily run picks up new releases. Release data is cached between runs with actions/cache and never committed,
+# so no job needs write access to the repository.
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.5'
+          extensions: curl, yaml, mbstring
+          coverage: none
+
+      - name: Install the generator
+        working-directory: generator
+        run: composer install --no-dev --no-progress --no-interaction
+
+      # A new key every run saves the updated cache; restore-keys takes the newest saved one.
+      - name: Release cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: generator/var/cache
+          key: catalog-cache-${{ github.run_id }}
+          restore-keys: catalog-cache-
+
+      - name: Generate the site content
+        working-directory: generator
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: php bin/catalog generate
+
+      - name: Build the site
+        uses: yiipress/engine/.github/actions/build@702e9a50a205de337da4c206d8262213a3676310 # 0.1.13
+        with:
+          version: 0.1.13
+          working-directory: site
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: site/_site
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write # deploy to GitHub Pages
+      id-token: write # the Pages deployment's OIDC token
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
