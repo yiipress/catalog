@@ -13,6 +13,7 @@ use YiiPress\Extension\Manifest\ExtensionManifest;
 use YiiPress\Extension\Manifest\ManifestError;
 
 use function array_map;
+use function in_array;
 use function sprintf;
 
 /**
@@ -20,6 +21,9 @@ use function sprintf;
  */
 final readonly class CatalogData
 {
+    /** Error codes of a failed request, from the engine's HTTP clients and `GitHubReleaseSource`. */
+    private const array READ_FAILURES = ['network_failed', 'rate_limited'];
+
     public const array TYPES = [
         'theme' => ['title' => 'Themes', 'path' => 'themes'],
         'processor' => ['title' => 'Content processors', 'path' => 'processors'],
@@ -132,6 +136,7 @@ final readonly class CatalogData
                 'installable' => $release->manifest !== null,
                 'compatible' => $listing->compatibility[$release->info->tag] ?? [],
                 'problems' => array_map(static fn(ManifestError $problem): string => $problem->message, $release->problems),
+                'unread' => self::unread($release),
             ], $fetched->releases),
             'history' => array_map(static fn($transfer): array => [
                 'date' => $transfer->date,
@@ -141,6 +146,21 @@ final readonly class CatalogData
             'fetched_at' => $fetched->fetchedAt,
             'stale' => $fetched->stale,
         ];
+    }
+
+    /**
+     * Whether the manifest of the release could not be read at this build (GitHub failed), as opposed to being
+     * missing or invalid. Such a release is shown as not read yet, not as not installable.
+     */
+    private static function unread(ReleaseRecord $release): bool
+    {
+        foreach ($release->problems as $problem) {
+            if (in_array($problem->code, self::READ_FAILURES, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

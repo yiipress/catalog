@@ -67,8 +67,26 @@ final class CatalogDataTest extends TestCase
         self::assertSame(['0.2.0' => true, '0.1.13' => false], $dusk['releases'][0]['compatible']);
         self::assertFalse($dusk['releases'][1]['installable']);
         self::assertSame(['Release v1.0.0 has no extension.yaml at the repository root.'], $dusk['releases'][1]['problems']);
+        self::assertFalse($dusk['releases'][1]['unread']);
         self::assertSame('2026-10-29T12:00:00Z', $dusk['fetched_at']);
         self::assertFalse($dusk['stale']);
+    }
+
+    public function testMarksReleasesWhoseManifestCouldNotBeRead(): void
+    {
+        $listing = self::listing(self::entry(), [
+            self::release('v1.1.0', Manifests::theme('acme/dusk', '1.1.0')),
+            new ReleaseRecord(new ReleaseInfo('v1.0.0', '1.0.0', '2026-09-01T00:00:00Z', 'https://github.com/acme/theme-dusk/releases/tag/v1.0.0'), null, [
+                new ManifestError('network_failed', '', 'GitHub did not answer.'),
+            ]),
+        ]);
+
+        $data = new CatalogData()->build([$listing], [], ['0.2.0'], '2026-10-29T12:00:00Z', []);
+
+        $releases = $data['extensions']['acme/dusk']['releases'];
+        self::assertFalse($releases[0]['unread']);
+        self::assertTrue($releases[1]['unread']);
+        self::assertFalse($releases[1]['installable']);
     }
 
     public function testListsWithdrawnIdsWithoutDetails(): void

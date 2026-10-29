@@ -163,6 +163,8 @@ ob_start();
 <?php $compatible = $row['compatible'][$engine] ?? false; ?>
                 <td class="<?= $compatible ? 'yes' : 'no' ?>"><?= $compatible ? '✓' : '—' ?></td>
 <?php endforeach; ?>
+<?php elseif ($row['unread'] ?? false): ?>
+                <td colspan="<?= count($engineVersions) + 1 ?>" class="problems">Could not be read from GitHub at the last build: <?= $h(implode('; ', $row['problems'])) ?></td>
 <?php else: ?>
                 <td colspan="<?= count($engineVersions) + 1 ?>" class="problems">Not installable<?= $row['problems'] !== [] ? ': ' . $h(implode('; ', $row['problems'])) : ': no extension.yaml' ?></td>
 <?php endif; ?>
