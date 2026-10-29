@@ -1,0 +1,51 @@
+/* Catalog additions on top of the minimal theme's style.css; colors come from its variables, so dark mode works. */
+.type-filter { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0; }
+.type-filter a {
+    padding: .3rem .8rem; border: 1px solid var(--c-border); border-radius: 999px;
+    color: var(--c-text); text-decoration: none;
+}
+.type-filter a[aria-current="true"] { border-color: var(--c-link); color: var(--c-link); }
+.type-filter .count { color: var(--c-text-muted); font-size: .85em; }
+
+.extension-list { list-style: none; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); }
+.extension-card { border: 1px solid var(--c-border); border-radius: .5rem; padding: 1rem; }
+.extension-card h3 { margin: 0 0 .25rem; font-size: 1.1rem; }
+.extension-card p { margin: .25rem 0; }
+.extension-id { color: var(--c-text-muted); font-size: .9em; margin-top: 0; }
+
+.categories { list-style: none; padding: 0; margin: .5rem 0 0; display: flex; flex-wrap: wrap; gap: .3rem; }
+.categories a {
+    display: inline-block; padding: .05rem .5rem; border-radius: .25rem;
+    background: var(--c-tag-bg); color: var(--c-tag-text); font-size: .85em; text-decoration: none;
+}
+
+.badge { display: inline-block; padding: .05rem .5rem; border-radius: .25rem; font-size: .75rem; font-weight: 600; vertical-align: middle; }
+.badge-official { background: var(--c-admonition-tip-bg); color: var(--c-admonition-tip); }
+.badge-abandoned { background: var(--c-admonition-warning-bg); color: var(--c-admonition-warning); }
+
+.notice { padding: .75rem 1rem; border-left: 4px solid var(--c-border-strong); background: var(--c-code-bg); }
+.notice-abandoned { border-color: var(--c-admonition-warning); background: var(--c-admonition-warning-bg); }
+.notice-stale { border-color: var(--c-admonition-note); background: var(--c-admonition-note-bg); }
+.empty, .generated, .table-note, .breadcrumbs { color: var(--c-text-muted); }
+
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1rem; }
+.facts dt { color: var(--c-text-muted); }
+.facts dd { margin: 0; }
+
+.screenshots { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); }
+.screenshots img { width: 100%; height: auto; border: 1px solid var(--c-border); border-radius: .25rem; }
+
+.example { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+.example p { margin: 0 0 .25rem; color: var(--c-text-muted); }
+.example pre, .install { overflow-x: auto; background: var(--c-code-bg); padding: .75rem; border-radius: .25rem; }
+
+.table-scroll { overflow-x: auto; }
+.releases, .withdrawn { border-collapse: collapse; width: 100%; }
+.releases th, .releases td, .withdrawn th, .withdrawn td { border-bottom: 1px solid var(--c-border); padding: .4rem .6rem; text-align: left; }
+.releases .yes { color: var(--c-admonition-tip); }
+.releases .no, .releases .problems { color: var(--c-text-muted); }
+
+@media (max-width: 40rem) {
+    .example { grid-template-columns: 1fr; }
+    .facts { grid-template-columns: 1fr; }
+}

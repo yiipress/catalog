@@ -1,0 +1,16 @@
+main:
+  - title: Themes
+    url: /themes/
+  - title: Processors
+    url: /processors/
+  - title: Categories
+    url: /categories/
+  - title: Submit
+    url: /submit/
+  - title: GitHub
+    url: https://github.com/yiipress/catalog
+footer:
+  - title: Withdrawn IDs
+    url: /withdrawn/
+  - title: YiiPress
+    url: https://github.com/yiipress/engine

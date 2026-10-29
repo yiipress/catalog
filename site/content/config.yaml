@@ -1,0 +1,9 @@
+title: "YiiPress extensions"
+description: "Themes and content processors for the YiiPress static site engine"
+# The GitHub Pages URL of yiipress/catalog; the owner confirms it before the first deploy.
+base_url: "https://yiipress.github.io/catalog/"
+languages: ["en"]
+taxonomies: ["categories"]
+theme: catalog
+assets:
+  fingerprint: true
