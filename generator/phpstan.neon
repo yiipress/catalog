@@ -5,3 +5,8 @@ parameters:
         - bin
         - tests
     tmpDir: var/phpstan
+    ignoreErrors:
+        # Tests read the plain-array site data by key; asserting each level would hide what they check.
+        -
+            identifiers: [offsetAccess.nonOffsetAccessible, argument.type]
+            path: tests/Unit/Site/*
