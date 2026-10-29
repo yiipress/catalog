@@ -1,0 +1,10 @@
+/generator/vendor/
+/generator/var/
+/site/content/data/catalog.yaml
+/site/content/themes/
+/site/content/processors/
+/site/content/importers/
+/site/content/plugins/
+/site/content/assets/extensions/
+/site/_site/
+/site/runtime/

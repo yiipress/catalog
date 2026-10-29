@@ -1,0 +1,17 @@
+services:
+  generator:
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    image: yiipress-catalog-generator
+    volumes:
+      - ..:/app
+      - composer-cache:/home/app/.composer/cache
+    working_dir: /app/generator
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+
+volumes:
+  composer-cache:

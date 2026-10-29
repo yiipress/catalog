@@ -1,0 +1,37 @@
+{
+    "name": "yiipress/catalog-generator",
+    "description": "Builds the content of the YiiPress extension catalog from the metadata in extensions/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": "^8.5",
+        "ext-curl": "*",
+        "ext-yaml": "*",
+        "yiipress/engine": "dev-extension-manifest#4aaa3927571c7902419b8d816f2e546776fc558f"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95.1",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^13.4.3"
+    },
+    "repositories": [
+        {"type": "vcs", "url": "https://github.com/yiipress/engine", "no-api": true}
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {"YiiPress\\Catalog\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"YiiPress\\Catalog\\Tests\\": "tests/"}
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {"yiisoft/config": false},
+        "platform": {
+            "ext-highlighter": "1.0.0",
+            "ext-inotify": "3.0.1",
+            "ext-mdparser": "0.6.1"
+        }
+    }
+}
