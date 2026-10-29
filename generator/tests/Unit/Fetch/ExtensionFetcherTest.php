@@ -11,6 +11,7 @@ use YiiPress\Catalog\Fetch\ExtensionFetcher;
 use YiiPress\Catalog\Fetch\FetchFailedException;
 use YiiPress\Catalog\Fetch\FileCache;
 use YiiPress\Catalog\Fetch\GitHubApi;
+use YiiPress\Catalog\Fetch\ReleaseLists;
 use YiiPress\Catalog\Tests\Support\FakeHttpClient;
 use YiiPress\Catalog\Tests\Support\Manifests;
 use YiiPress\Catalog\Tests\Support\TempTree;
@@ -168,12 +169,12 @@ final class ExtensionFetcherTest extends TestCase
 
     private function fetcher(FakeHttpClient $http, string $now = '2026-10-29T12:00:00Z', bool $offline = false): ExtensionFetcher
     {
+        $cache = new FileCache($this->tree->root . '/cache');
+
         return new ExtensionFetcher(
-            new GitHubApi($http),
+            new ReleaseLists(new GitHubApi($http), $cache, $now, $offline),
             new GitHubReleaseSource($http),
-            new FileCache($this->tree->root . '/cache'),
-            $now,
-            $offline,
+            $cache,
         );
     }
 
